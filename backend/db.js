@@ -1,6 +1,15 @@
-const mongoose = require("mongoose");
-// Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1/27017/paytm-app")
+// UserName for MongoDB:  harcharansingh198400
+// Password for MongoDB:  InA0xZxOH12ZhESH
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://harcharansingh198400:InA0xZxOH12ZhESH@cluster0.yguaaqu.mongodb.net/')
+    .then(() => {
+        console.log("Connected to MongoDB");
+    })
+    .catch((err) => {
+        console.error("Error connecting to MongoDB", err);
+    })
+
 
 // Create User schema
 // Create a Schema for Users
