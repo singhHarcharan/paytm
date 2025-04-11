@@ -5,9 +5,10 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../db');
 const JWT_SECRET = require('../config');
 const authMiddleware = require('../middleware');
+const { route } = require('./user');
 
 const userSchema = zod.object({
-    username: zod.string().min(3).max(30),
+    username: zod.string().email(),
     password: zod.string().min(8),
     firstname: zod.string().max(50),
     lastname: zod.string().max(50),
@@ -42,6 +43,39 @@ router.post("/signup", async (req, res) => {
     })
 })
 
+const signinBody = zod.object({
+    username: zod.string().email(),
+    password: zod.string(),
+})
+// Signin route
+router.post("/signin", async(req, res) => {
+    // Input validation
+    const bodyData = req.body;
+    const { success } = signinBody.safeParse(bodyData);
+    if(!success) {
+        return req.status(411).json({
+            message: "Incorrect inputs"
+        })
+    }
+
+    // check if user exists
+    const existingUser = await User.findOne({
+        username: bodyData.username,
+        password: bodyData.password
+    })
+    // IF user exists, create a token and send it back to the user
+    if(existingUser) {
+        const token = jwt.sign({ userId: existingUser._id }, JWT_SECRET);
+        return res.json({
+            token: token
+        })
+    }
+    // otherwise, send error
+    return res.status(401).json({
+        message: "Invalid credentials"
+    })
+})
+
 const updateBody = zod.object( {
     firstname: zod.string().optional(),
     lastname: zod.string().optional(),
@@ -62,6 +96,30 @@ router.put("/update", authMiddleware, async (req, res) => {
     await User.updateOne({_id: req.userId}, bodyData);
     req.json({
         message: "User updated successfully"
+    })
+})
+
+// Route to get users from the backend, filterable via firstName/lastName
+route.get("/getUsers", async (req, res) => {
+    const filter = req.query.filter || "";
+    const usersPresent = await User.find({
+        $or: [{
+            firstName: {
+                "$regex": filter
+            }
+        }, {
+            lastName: {
+                "$regex": filter
+            }
+        }]
+    })
+    res.json({
+        user: usersPresent.map((user) => {
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            _id: user._id
+        })
     })
 })
 
