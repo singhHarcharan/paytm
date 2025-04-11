@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../db');
 const JWT_SECRET = require('../config');
 const authMiddleware = require('../middleware');
-const { route } = require('./user');
 
 const userSchema = zod.object({
     username: zod.string().email(),
@@ -35,6 +34,11 @@ router.post("/signup", async (req, res) => {
     // create user
     const user = await User.create(bodyData);
     const userId = user._id;
+    // Give random amount of money to the user
+    await Account.create({
+        userId: userId,
+        balance: Math.floor(Math.random() * 10000) + 1
+    })
     const token = jwt.sign({ userId }, JWT_SECRET)
 
     req.json({
@@ -100,7 +104,7 @@ router.put("/update", authMiddleware, async (req, res) => {
 })
 
 // Route to get users from the backend, filterable via firstName/lastName
-route.get("/getUsers", async (req, res) => {
+router.get("/getUsers", async (req, res) => {
     const filter = req.query.filter || "";
     const usersPresent = await User.find({
         $or: [{
@@ -114,12 +118,12 @@ route.get("/getUsers", async (req, res) => {
         }]
     })
     res.json({
-        user: usersPresent.map((user) => {
+        user: usersPresent.map(user => ({
             username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
             _id: user._id
-        })
+        }))
     })
 })
 
