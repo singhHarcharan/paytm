@@ -18,7 +18,7 @@ router.post("/signup", async (req, res) => {
     const bodyData = req.body;
     const { success } = userSchema.safeParse(bodyData);
     if(!success) {
-        req.json({
+        return res.json({
             message: "Email already taken / Incorrect inputs"
         })
     }
@@ -26,8 +26,8 @@ router.post("/signup", async (req, res) => {
     const existingUser = await User.findOne({
         username: bodyData.username
     })
-    if(existingUser._id) {
-        req.json({
+    if(existingUser) {
+        return res.json({
             message: "User already exists"
         })
     }
@@ -41,7 +41,7 @@ router.post("/signup", async (req, res) => {
     })
     const token = jwt.sign({ userId }, JWT_SECRET)
 
-    req.json({
+    return res.json({
         message: "User created successfully",
         token: token,
     })
@@ -98,7 +98,7 @@ router.put("/update", authMiddleware, async (req, res) => {
     }
     // check if user exists
     await User.updateOne({_id: req.userId}, bodyData);
-    req.json({
+    res.json({
         message: "User updated successfully"
     })
 })
