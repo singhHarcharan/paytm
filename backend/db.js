@@ -1,8 +1,8 @@
 // UserName for MongoDB:  harcharansingh198400
-// Password for MongoDB:  InA0xZxOH12ZhESH
+// Password for MongoDB:  HlT7rxHPCH4Z2035
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://harcharansingh198400:InA0xZxOH12ZhESH@cluster0.yguaaqu.mongodb.net/')
+mongoose.connect('mongodb+srv://harcharansingh198400:HlT7rxHPCH4Z2035@cluster0.yguaaqu.mongodb.net/paytm-app')
     .then(() => {
         console.log("Connected to MongoDB");
     })  

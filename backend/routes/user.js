@@ -2,23 +2,23 @@ const express = require('express');
 const router = express.Router();
 const zod = require('zod');
 const jwt = require('jsonwebtoken');
-const { User } = require('../db');
+const { User, Account } = require('../db');
 const JWT_SECRET = require('../config');
 const authMiddleware = require('../middleware');
 
-const userSchema = zod.object({
+const signupBody = zod.object({
     username: zod.string().email(),
-    password: zod.string().min(8),
-    firstname: zod.string().max(50),
-    lastname: zod.string().max(50),
+    password: zod.string(),
+    firstName: zod.string(),
+    lastName: zod.string(),
 })
 
 // signup and signin routes
 router.post("/signup", async (req, res) => {
     const bodyData = req.body;
-    const { success } = userSchema.safeParse(bodyData);
-    if(!success) {
-        return res.json({
+    const { success } = signupBody.safeParse(bodyData);
+    if (!success) {
+        return res.status(411).json({
             message: "Email already taken / Incorrect inputs"
         })
     }
@@ -57,7 +57,7 @@ router.post("/signin", async(req, res) => {
     const bodyData = req.body;
     const { success } = signinBody.safeParse(bodyData);
     if(!success) {
-        return req.status(411).json({
+        return res.status(411).json({
             message: "Incorrect inputs"
         })
     }
@@ -81,8 +81,8 @@ router.post("/signin", async(req, res) => {
 })
 
 const updateBody = zod.object( {
-    firstname: zod.string().optional(),
-    lastname: zod.string().optional(),
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional(),
     password: zod.string().optional(),
 })
 
