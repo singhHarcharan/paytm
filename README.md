@@ -3,16 +3,40 @@
 
 A full-stack digital wallet application inspired by Paytm, built with the MERN stack (MongoDB, Express.js, React.js, Node.js). This application allows users to create accounts, log in, view their balance, and send money to other users.
 
-## 🚀 Features
+## 🚀 Key Features & Concepts
 
-- User Authentication (Signup/Login)
-- Secure JWT-based authentication
-- View account balance
-- Send money to other users
-- Transaction history
-- Responsive UI built with Tailwind CSS
-- Protected routes
-- Form validation
+### 🔐 Authentication & Security
+- JWT-based authentication with secure token storage
+- Protected routes using React Router
+- Password hashing using bcrypt
+- Input validation using Zod schema validation
+
+### 💰 Core Functionality
+- Real-time balance updates
+- Secure peer-to-peer money transfers
+- Transaction history with timestamps
+- User account management
+
+### 🎨 Frontend
+- Built with React.js and Vite
+- Responsive design using Tailwind CSS
+- State management with React Context API
+- Form handling with controlled components
+- Client-side routing with React Router
+- Axios for API communication
+
+### ⚙️ Backend
+- RESTful API with Express.js
+- MongoDB with Mongoose for data modeling
+- Middleware for authentication and error handling
+- Environment-based configuration
+- CORS enabled for secure cross-origin requests
+
+### 🛡️ Security Measures
+- Environment variables for sensitive data
+- Input sanitization
+- Rate limiting on authentication endpoints
+- Secure HTTP headers
 
 ## 🛠 Tech Stack
 
