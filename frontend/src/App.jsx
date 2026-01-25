@@ -3,8 +3,8 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import { Signup } from "./pages/Signup";
-import { Signin } from "./pages/Signin";
+import { SignUp as Signup } from "./pages/SignUp";
+import { Signin } from "./pages/SignIn";
 import { Dashboard } from "./pages/Dashboard";
 import { SendMoney } from "./pages/SendMoney";
 
