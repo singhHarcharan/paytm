@@ -4,6 +4,7 @@ import axios from "axios";
 import { Appbar } from "../components/Appbar";
 import { Balance } from "../components/Balance";
 import { Users } from "../components/Users";
+import { API_BASE_URL } from "../config";
 
 export const Dashboard = () => {
   const [balance, setBalance] = useState(0);
@@ -20,7 +21,7 @@ export const Dashboard = () => {
         }
 
         // Fetch user balance
-        const balanceResponse = await axios.get("http://localhost:3000/api/v1/account/balance", {
+        const balanceResponse = await axios.get(`${API_BASE_URL}/account/balance`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -28,7 +29,7 @@ export const Dashboard = () => {
         setBalance(balanceResponse.data.balance);
 
         // Fetch user details
-        const userResponse = await axios.get("http://localhost:3000/api/v1/user/me", {
+        const userResponse = await axios.get(`${API_BASE_URL}/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

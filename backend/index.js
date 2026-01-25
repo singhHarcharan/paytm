@@ -10,7 +10,10 @@ const mainRouter = require("./routes/index");
 // Send every request to the main router
 app.use("/api/v1", mainRouter);
 
-// listen on port 3000
-app.listen(3000);
+// listen on port 3001 to avoid conflict with frontend
+const PORT = 3001;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
 
